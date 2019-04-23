@@ -862,8 +862,12 @@ public class LexiconConfiguration<V extends BigdataValue>
 			 */
             switch (dte) {
             case XSDBoolean:
-                return new XSDBooleanIV<BigdataLiteral>(XMLDatatypeUtil
-                        .parseBoolean(v));
+                try {
+                    UUID uuid = UUID.fromString(v);
+                    return new UUIDLiteralIV<BigdataLiteral>(UUID.fromString(v));
+                } catch (IllegalArgumentException exception) {
+                    return new XSDBooleanIV<BigdataLiteral>(XMLDatatypeUtil.parseBoolean(v));
+                }
             case XSDByte:
                 return new XSDNumericIV<BigdataLiteral>(XMLDatatypeUtil
                         .parseByte(v));
